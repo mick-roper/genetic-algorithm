@@ -1,15 +1,14 @@
 package algorithm
 
-import "log"
+import (
+	"log"
+	"sort"
+)
 
 // Population is a collection of indviduals
 type Population struct {
 	Generation int
-	Fitness    int
-	Converged  bool
 	members    []Individual
-	fittest    *Individual
-	secFittest *Individual
 }
 
 // NewPopulation of the given size
@@ -20,42 +19,43 @@ func NewPopulation(size int) *Population {
 		m[i] = *newIndividual()
 	}
 
-	return &Population{}
+	return &Population{
+		members: m,
+	}
 }
 
 // Iterate the population by one generation
 func (p *Population) Iterate(target string) {
 	p.Generation++
-	var w *Individual
 
-	for n, i := range p.members {
+	for _, i := range p.members {
 		i.calculateFitness(target)
-
-		if p.fittest == nil || i.fitness > p.fittest.fitness {
-			p.fittest = &i
-		} else if p.secFittest == nil || i.fitness > p.secFittest.fitness {
-			p.secFittest = &i
-		}
-
-		if w == nil || i.fitness < w.fitness {
-			w = &i
-		}
 	}
 
-	// check for convergence
-	if p.Fitness == p.fittest.fitness {
-		p.Converged = true
+	sort.Slice(p.members, func(a, b int) bool {
+		return p.members[a].fitness > p.members[b].fitness
+	})
+
+	size := float64(len(p.members))
+
+	// ignore the top 10% allowing them into the next generation
+
+	// next 50% breed
+	for i := int(size * 0.1); i < int(size*0.60); i++ {
+		f1 := &p.members[i]
+		i++
+		f2 := &p.members[i]
+
+		p.members = append(p.members, Individual{chromosome: f1.CombineWith(f2)})
 	}
-	p.Fitness = p.fittest.fitness
 
-	// merge the fittest
-	c := p.fittest.CombineWith(p.secFittest)
-
-	// replace the weakest chromosome
-	w.chromosome = c
+	// replace whatever is left with new individuals
+	for i := int(size * 0.6); i < int(size); i++ {
+		p.members[i] = *newIndividual()
+	}
 }
 
 // Print the state of the population
 func (p *Population) Print() {
-	log.Printf("Generation: %v Fittest: %v", p.Generation, p.fittest.chromosome)
+	log.Printf("Generation: %v Fittest: %v", p.Generation, p.members[0].chromosome)
 }

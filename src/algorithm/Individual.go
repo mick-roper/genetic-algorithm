@@ -38,7 +38,7 @@ func (i *Individual) CombineWith(o *Individual) string {
 	var l int
 	il, ol := len(i.chromosome), len(o.chromosome)
 
-	if l = il; ol > l {
+	if l = il; ol > il {
 		l = ol
 	}
 
