@@ -1,7 +1,18 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"algorithm"
+)
 
 func main() {
-	log.Print("hello world")
+	pop := algorithm.NewPopulation(100)
+
+	for !pop.Converged {
+		pop.Iterate()
+	}
+
+	log.Printf("Population converged at generation %v\n", pop.Generation)
+
 }
