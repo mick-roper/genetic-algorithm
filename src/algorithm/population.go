@@ -41,12 +41,11 @@ func (p *Population) Iterate(target string) {
 	// ignore the top 10% allowing them into the next generation
 
 	// next 50% breed
+	candidates := p.members[int(size*0.1):int(size*0.60)]
 	for i := int(size * 0.1); i < int(size*0.60); i++ {
-		f1 := &p.members[i]
-		i++
-		f2 := &p.members[i]
-
-		p.members = append(p.members, Individual{chromosome: f1.CombineWith(f2)})
+		f1 := &candidates[r.Intn(len(candidates))]
+		f2 := &candidates[r.Intn(len(candidates))]
+		p.members[i] = Individual{chromosome: f1.CombineWith(f2)}
 	}
 
 	// replace whatever is left with new individuals
