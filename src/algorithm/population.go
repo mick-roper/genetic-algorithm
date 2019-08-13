@@ -40,8 +40,8 @@ func (p *Population) Iterate(target string) {
 
 	// updated the members
 	size := len(p.members)
-	bMin := int(float32(size) * 0.1)
-	bMax := int(float32(size) * 0.6)
+	bMin := int(float32(size)*0.1) - 1
+	bMax := int(float32(size)*0.6) - 1
 	breeders := p.members[bMin:bMax]
 
 	for i := range p.members {
@@ -49,8 +49,13 @@ func (p *Population) Iterate(target string) {
 			// allow these to survive to the nxt generation
 		} else if i < bMax { // breeders
 			// randomly pick some parents
-			a := breeders[randomInt(bMin, bMax)]
-			b := breeders[randomInt(bMin, bMax)]
+			x := randomInt(bMin, bMax)
+			y := randomInt(bMin, bMax)
+
+			log.Printf("DEBUG: breeder length %v x %v y %v", len(breeders), x, y)
+
+			a := breeders[x]
+			b := breeders[y]
 			p.members[i] = &Individual{
 				chromosome: a.CombineWith(b),
 			}

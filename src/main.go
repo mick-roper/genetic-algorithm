@@ -9,7 +9,7 @@ import (
 const target = "Hello World"
 
 func main() {
-	pop := algorithm.NewPopulation(100)
+	pop := algorithm.NewPopulation(100, len(target))
 
 	for true {
 		pop.Iterate(target)
