@@ -31,7 +31,7 @@ func main() {
 
 		diff = (time.Now().UnixNano() - start) / 100000
 
-		<-time.After(time.Duration(interval-diff) * time.Nanosecond)
+		time.Sleep(time.Duration(interval-diff) * time.Millisecond)
 	}
 
 	log.Println("Population completed its evolution at generation ", pop.Generation)
