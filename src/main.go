@@ -10,6 +10,7 @@ import (
 
 var target = flag.String("target", "", "the target string we trying to reach")
 var delayMs = flag.Int("delay", 25, "the amount of delay between iterations in milliseconds")
+var popSize = flag.Int("population", 100, "the size of the population you want to use")
 
 func main() {
 	flag.Parse()
@@ -19,7 +20,7 @@ func main() {
 	}
 
 	interval := time.Duration(*delayMs) * time.Millisecond
-	pop := algorithm.NewPopulation(100, len(*target))
+	pop := algorithm.NewPopulation(*popSize, len(*target))
 
 	for pop.Fittest().Chromosome() != *target {
 		pop.Iterate(*target)
