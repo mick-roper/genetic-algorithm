@@ -1,5 +1,7 @@
 package algorithm
 
+import "strings"
+
 // Individual member of a population
 type Individual struct {
 	fitness    int
@@ -31,27 +33,23 @@ func (i *Individual) IsFitterThan(other *Individual) bool {
 
 // CombineWith another individual to create a child that shares their attributes
 func (i *Individual) CombineWith(o *Individual) string {
-	var childChromosome string
-	var l int
-	il, ol := len(i.chromosome), len(o.chromosome)
-
-	if l = il; ol > il {
-		l = ol
-	}
+	sb := strings.Builder{}
+	l := len(i.chromosome)
+	sb.Grow(l)
 
 	for n := 0; n < l; n++ {
 		p := r.Float64()
 
-		if p < 0.45 && n < il { // take from this parent
-			childChromosome += string(i.chromosome[n])
-		} else if p < 0.9 && n < ol { // take from other parent
-			childChromosome += string(o.chromosome[n])
+		if p < 0.45 { // take from this parent
+			sb.WriteByte(i.chromosome[n])
+		} else if p < 0.9 { // take from other parent
+			sb.WriteByte(o.chromosome[n])
 		} else { // mutate
-			childChromosome += randomGene()
+			sb.WriteString(randomGene())
 		}
 	}
 
-	return childChromosome
+	return sb.String()
 }
 
 // Chromosome of the individual
