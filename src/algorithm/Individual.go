@@ -18,7 +18,7 @@ func (i *Individual) calculateFitness(target string) {
 	l := len(target)
 
 	for n := 0; n < l; n++ {
-		if target[n] != i.chromosome[n] {
+		if target[n] == i.chromosome[n] {
 			i.fitness++
 		}
 	}
