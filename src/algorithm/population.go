@@ -8,50 +8,58 @@ import (
 // Population is a collection of indviduals
 type Population struct {
 	Generation int
-	members    []Individual
+	members    []*Individual
+	length     int
 }
 
 // NewPopulation of the given size
-func NewPopulation(size int) *Population {
-	m := make([]Individual, size)
+func NewPopulation(size, length int) *Population {
+	m := make([]*Individual, size)
 
 	for i := range m {
-		m[i] = *newIndividual()
+		m[i] = newIndividual(length)
 	}
 
 	return &Population{
-		members: m,
+		Generation: 0,
+		length:     length,
+		members:    m,
 	}
 }
 
 // Iterate the population by one generation
 func (p *Population) Iterate(target string) {
-	p.Generation++
-
 	for _, i := range p.members {
 		i.calculateFitness(target)
 	}
 
+	// order the members
 	sort.Slice(p.members, func(a, b int) bool {
 		return p.members[a].fitness > p.members[b].fitness
 	})
 
-	size := float64(len(p.members))
+	// updated the members
+	size := len(p.members)
+	bMin := int(float32(size) * 0.1)
+	bMax := int(float32(size) * 0.6)
+	breeders := p.members[bMin:bMax]
 
-	// ignore the top 10% allowing them into the next generation
-
-	// next 50% breed
-	candidates := p.members[int(size*0.1):int(size*0.60)]
-	for i := int(size * 0.1); i < int(size*0.60); i++ {
-		f1 := &candidates[r.Intn(len(candidates))]
-		f2 := &candidates[r.Intn(len(candidates))]
-		p.members[i] = Individual{chromosome: f1.CombineWith(f2)}
+	for i := range p.members {
+		if i < bMin { // elites
+			// allow these to survive to the nxt generation
+		} else if i < bMax { // breeders
+			// randomly pick some parents
+			a := breeders[randomInt(bMin, bMax)]
+			b := breeders[randomInt(bMin, bMax)]
+			p.members[i] = &Individual{
+				chromosome: a.CombineWith(b),
+			}
+		} else { // new members
+			p.members[i] = newIndividual(p.length)
+		}
 	}
 
-	// replace whatever is left with new individuals
-	for i := int(size * 0.6); i < int(size); i++ {
-		p.members[i] = *newIndividual()
-	}
+	p.Generation++
 }
 
 // Print the state of the population

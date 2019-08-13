@@ -6,10 +6,10 @@ type Individual struct {
 	chromosome string
 }
 
-func newIndividual() *Individual {
+func newIndividual(genes int) *Individual {
 	return &Individual{
 		fitness:    0,
-		chromosome: createGenome(5, 25),
+		chromosome: createGenome(genes),
 	}
 }
 

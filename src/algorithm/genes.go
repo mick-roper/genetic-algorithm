@@ -2,19 +2,21 @@ package algorithm
 
 import "math"
 
-const genes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
+const (
+	genes        = "abcdefghijklmnopqrxstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
+	genesLength  = len(genes)
+	fGenesLength = float64(genesLength)
+)
 
-func createGenome(min, max int) string {
-	d := r.Intn(max) + min
+func createGenome(n int) string {
 	var c string
-	for i := 0; i < d-min; i++ {
-		c += string(genes[int64(math.Floor(r.Float64()*float64(len(genes))))])
+	for i := 0; i < n; i++ {
+		c += string(genes[int64(math.Floor(r.Float64()*fGenesLength))])
 	}
 	return c
 }
 
 func randomGene() string {
-	l := len(genes)
-	n := r.Intn(l - 1)
+	n := r.Intn(genesLength - 1)
 	return string(genes[n])
 }
