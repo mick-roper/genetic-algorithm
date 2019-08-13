@@ -1,22 +1,37 @@
 package algorithm
 
-import "math"
+import "unsafe"
 
 const (
-	genes        = "abcdefghijklmnopqrxstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-	genesLength  = len(genes)
-	fGenesLength = float64(genesLength)
+	genes         = "abcdefghijklmnopqrxstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 []{}1234567890;:'/?,.`~<>"
+	letterIdxBits = 6
+	letterIdxMask = 1<<letterIdxBits - 1
+	letterIdxMax  = 63 / letterIdxBits
 )
 
-func createGenome(n int) string {
-	var c string
-	for i := 0; i < n; i++ {
-		c += string(genes[int64(math.Floor(r.Float64()*fGenesLength))])
+func randStringBytes(n int) string {
+	b := make([]byte, n)
+
+	for i, cache, remain := n-1, r.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = r.Int63(), letterIdxMax
+		}
+
+		if idx := int(cache & letterIdxMask); idx < len(genes) {
+			b[i] = genes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
 	}
-	return c
+
+	return *(*string)(unsafe.Pointer(&b))
+}
+
+func createGenome(n int) string {
+	return randStringBytes(n)
 }
 
 func randomGene() string {
-	n := r.Intn(genesLength - 1)
-	return string(genes[n])
+	return randStringBytes(1)
 }
