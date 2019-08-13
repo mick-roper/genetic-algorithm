@@ -22,7 +22,7 @@ func main() {
 	for pop.Fittest().Chromosome() != *target {
 		pop.Iterate(*target)
 		pop.Print()
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(20 * time.Millisecond)
 	}
 
 	log.Println("Population completed its evolution at generation ", pop.Generation)
