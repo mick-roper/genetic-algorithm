@@ -15,13 +15,10 @@ func newIndividual(genes int) *Individual {
 
 func (i *Individual) calculateFitness(target string) {
 	i.fitness = 0
-	var l int
-	if l = len(target); len(i.chromosome) < len(target) {
-		l = len(i.chromosome)
-	}
+	l := len(target)
 
 	for n := 0; n < l; n++ {
-		if target[n] == i.chromosome[n] {
+		if target[n] != i.chromosome[n] {
 			i.fitness++
 		}
 	}
@@ -55,4 +52,9 @@ func (i *Individual) CombineWith(o *Individual) string {
 	}
 
 	return childChromosome
+}
+
+// Chromosome of the individual
+func (i *Individual) Chromosome() string {
+	return i.chromosome
 }

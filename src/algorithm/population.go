@@ -42,13 +42,13 @@ func (p *Population) Iterate(target string) {
 	size := len(p.members)
 	bMin := int(float32(size)*0.1) - 1
 	bMax := int(float32(size)*0.5) - 1
-	breeders := p.members[bMin:bMax]
+	breeders := p.members[:bMax]
 	bLength := len(breeders)
 
 	for i := range p.members {
-		if i < bMin+1 { // elites
+		if i <= bMin { // elites
 			// allow these to survive to the nxt generation
-		} else if i < bMax+1 { // breeders
+		} else if i <= bMax { // breeders
 			// randomly pick some parents
 			a := breeders[r.Intn(bLength)]
 			b := breeders[r.Intn(bLength)]
