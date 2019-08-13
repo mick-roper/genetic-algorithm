@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"runtime"
 	"time"
 
 	"github.com/mick-roper/genetic-algorithm/src/algorithm"
@@ -19,6 +21,13 @@ func main() {
 		log.Fatal("a target must be provided")
 	}
 
+	go func() {
+		for {
+			printMemUsage()
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
 	interval := time.Duration(*delayMs) * time.Millisecond
 	pop := algorithm.NewPopulation(*popSize, len(*target))
 
@@ -30,4 +39,18 @@ func main() {
 	}
 
 	log.Println("Population completed its evolution at generation ", pop.Generation)
+}
+
+func printMemUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
+	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
+	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
+	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
+	fmt.Printf("\tNumGC = %v\n", m.NumGC)
+}
+
+func bToMb(b uint64) uint64 {
+	return b / 1024 / 1024
 }
