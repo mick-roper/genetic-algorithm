@@ -9,7 +9,7 @@ import (
 )
 
 var target = flag.String("target", "", "the target string we trying to reach")
-var delayMs = flag.Int("delay", 25, "the amount of delay between iterations in milliseconds")
+var delayMs = flag.Int("delay", 100, "the amount of delay between iterations in milliseconds")
 var popSize = flag.Int("population", 20, "the size of the population you want to use")
 
 func main() {
