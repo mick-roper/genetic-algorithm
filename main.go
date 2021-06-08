@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/mick-roper/genetic-algorithm/src/algorithm"
+	"github.com/mick-roper/genetic-algorithm/algorithm"
 )
 
 var target = flag.String("target", "", "the target string we trying to reach")
