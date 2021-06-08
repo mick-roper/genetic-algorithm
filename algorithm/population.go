@@ -45,9 +45,11 @@ func (p *Population) Iterate(target string) {
 	breeders := p.members[:bMax]
 	bLength := len(breeders)
 
+	// create the next generation
 	for i := range p.members {
 		if i <= bMin { // elites
-			// allow these to survive to the nxt generation
+			// allow these to survive to the next generation
+			continue
 		} else if i <= bMax { // breeders
 			// randomly pick some parents
 			a := breeders[r.Intn(bLength)]
@@ -55,7 +57,7 @@ func (p *Population) Iterate(target string) {
 			p.members[i] = &Individual{
 				chromosome: a.CombineWith(b),
 			}
-		} else { // new members
+		} else { // replace these with new members
 			p.members[i] = newIndividual(p.length)
 		}
 	}
