@@ -3,7 +3,7 @@ package algorithm
 import "unsafe"
 
 const (
-	genes         = "[]{}1234567890;:'/?,.`~<> abcdefghijklmnopqrxstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	genes         = "abcdefghijklmnopqrxstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[]{}1234567890;:'/?,.`~<> "
 	letterIdxBits = 6
 	letterIdxMask = 1<<letterIdxBits - 1
 	letterIdxMax  = 63 / letterIdxBits
