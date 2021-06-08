@@ -13,16 +13,16 @@ type Population struct {
 }
 
 // NewPopulation of the given size
-func NewPopulation(size, length int) *Population {
+func NewPopulation(size, targetLength int) *Population {
 	m := make([]*Individual, size)
 
 	for i := range m {
-		m[i] = newIndividual(length)
+		m[i] = newIndividual(targetLength)
 	}
 
 	return &Population{
 		Generation: 0,
-		length:     length,
+		length:     targetLength,
 		members:    m,
 	}
 }
